@@ -1,5 +1,4 @@
 # Deployment do MongoDB
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +25,7 @@ spec:
 
 ---
 
+# Service do MongoDB
 apiVersion: v1
 kind: Service
 metadata: 
@@ -37,9 +37,41 @@ spec:
   - port: 27017
   type: ClusterIP
 
-
 ---
 
+# Deployment da aplicação web
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata: 
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: mateusmotaa/rotten-potatoes:v1
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGODB_DB
+              value: "admin"
+            - name: MONGODB_HOST
+              value: "mongodb"
+            - name: MONGODB_PORT
+              value: "27017"
+            - name : MONGODB_USERNAME
+              value : "mongouser"
+            - name: MONGODB_PASSWORD
+              value: "mongopwd"
+---
+
+# Service da aplicação web
 apiVersion: v1
 kind: Service
 metadata: 
@@ -51,4 +83,4 @@ spec:
   - port: 80
     targetPort: 5000
     nodePort: 30000
-    type: nodePort
+  type: NodePort
