@@ -32,6 +32,7 @@ jobs:
             mateusmotaa/rotten-potatoes:latest
             mateusmotaa/rotten-potatoes:${{ github.run_number }}
   CD: 
+    needs: [CI]
     run-on: ubuntu-latest
     
     steps:
