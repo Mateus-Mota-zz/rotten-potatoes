@@ -40,7 +40,7 @@ jobs:
       
       - name: Kubernetes Set Context
         uses: Azure/k8s-set-context@v2
-        width:
+        with:
           method: kubeconfig
           kubeconfig: ${{ secrets.K8S_KUBECONFIG }}
       
